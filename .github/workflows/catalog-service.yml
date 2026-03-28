@@ -46,7 +46,7 @@ jobs:
         run: |
           docker build \
             -t $IMAGE \
-            -f deployment/docker-compose/CatalogService.Dockerfile \
+            -f deployment/CatalogService.Dockerfile \
             .
 
       - name: Push Docker image
