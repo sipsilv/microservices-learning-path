@@ -3,22 +3,30 @@ on:
   push:
     paths:
       - catalog-service/**
+      - deployment/**
     branches:
       - "**"
+  pull_request:
+
+permissions:
+  contents: read
+  packages: write
 
 
 jobs:
   build:
-    name: Build
+    name: Build, Push and Test
     runs-on: ubuntu-latest
     env:
-      working-directory: ./catalog-service
+      WORKDIR: ./catalog-service
+      IMAGE: ghcr.io/${{ github.repository_owner }}/catalog-service:latest
     defaults:
       run:
-        working-directory: ${{env.working-directory}}
+        working-directory: ${{ env.WORKDIR }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: checkout code
+        uses : actions/checkout@v4
 
       - name:  Setup java 21
         uses: actions/setup-java@v4
@@ -29,6 +37,33 @@ jobs:
 
       - name: Build with Maven
         run:  ./mvnw -ntp verify
+
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}"| docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+
+      - name: Build Docker image
+        run: |
+            docker build \
+              -t $IMAGE \
+              -f ../deployment/CatalogService.Dockerfile \
+              ../..
+
+      - name: Push docker image
+        run: docker push $IMAGE
+
+      - name: Run docker compose
+        run: docker compose -f ../../compose.yaml up -d
+
+      - name: Wait for services
+        run: sleep 25
+
+      - name: Verify api
+        run: curl --fail http://localhost:8081/actuator/health
+
+      - name: Shutdown
+        if: always()
+        run: docker compose -f ../../compose.yml down
 
 
 

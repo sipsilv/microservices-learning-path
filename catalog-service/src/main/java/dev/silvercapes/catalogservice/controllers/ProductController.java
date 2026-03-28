@@ -6,10 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/products")
@@ -21,5 +18,10 @@ class ProductController {
     @GetMapping("")
     ResponseEntity<PagedResult<ProductResponseDTO>> getProducts(@RequestParam(name ="page", defaultValue = "1")int pageNum){
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(pageNum));
+    }
+
+    @GetMapping("/{code}")
+    ProductResponseDTO getProductByCode(@PathVariable String code){
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProductByCode(code)).getBody();
     }
 }

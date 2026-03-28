@@ -24,4 +24,24 @@ class ProductControllerTest extends AbstractIntegrationTests {
                 .body("hasNext", is(true))
                 .body("hasPrevious", is(false));
     }
+
+    @Test
+    void shouldReturnOneProduct(){
+        given().contentType(ContentType.JSON)
+                .when()
+                .get("/products/P100")
+                .then()
+                .statusCode(200)
+                .body("name", is("The Hunger Games"));
+    }
+
+    @Test
+    void shouldReturn404NotFound(){
+        given().contentType(ContentType.JSON)
+                .when()
+                .get("/products/invalid")
+                .then()
+                .statusCode(404);
+    }
+
 }

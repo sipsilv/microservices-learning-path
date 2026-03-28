@@ -3,13 +3,11 @@ services:
     image: postgres:16-alpine
     container_name: catalog-db
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=catalog-db
-    ports:
-      - "15432:5432"
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U catalog-db"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -17,3 +15,21 @@ services:
       resources:
         limits:
           memory: 500m
+    restart: unless-stopped
+
+  catalog-service:
+    image: catalog-service:latest
+    container_name: catalog-service
+    build:
+      context: ../..
+      dockerfile: deployment/CatalogService.Dockerfile
+    depends_on:
+      catalog-db:
+        condition: service_healthy
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "8081:8081"
+    restart: unless-stopped

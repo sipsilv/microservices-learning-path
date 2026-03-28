@@ -3,6 +3,8 @@ package dev.silvercapes.catalogservice.service;
 import dev.silvercapes.catalogservice.config.ApplicationProperties;
 import dev.silvercapes.catalogservice.dto.PagedResult;
 import dev.silvercapes.catalogservice.dto.ProductResponseDTO;
+import dev.silvercapes.catalogservice.exceptions.ProductNotFoundException;
+import dev.silvercapes.catalogservice.model.Product;
 import dev.silvercapes.catalogservice.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -40,5 +43,11 @@ public class ProductService {
                 .hasPrevious(productsPage.hasPrevious())
                 .pageNumber(productsPage.getNumber() + 1)
                 .build();
+    }
+
+    public ProductResponseDTO getProductByCode(String code){
+        Product product = productRepository.findProductByCode(code)
+                .orElseThrow(() -> new ProductNotFoundException("Product with the given code doesn't exist"));
+        return modelMapper.map(product, ProductResponseDTO.class);
     }
 }
