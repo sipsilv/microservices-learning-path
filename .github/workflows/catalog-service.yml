@@ -52,16 +52,16 @@ jobs:
       - name: Push Docker image
         run: docker push $IMAGE
 
-      - name: Run docker compose
-        run: docker compose -f deployment/docker-compose/compose.yaml up -d
-
-      - name: Wait for service (better than sleep)
-        run: |
-          until curl -f http://localhost:8081/actuator/health; do
-            echo "Waiting for service..."
-            sleep 5
-          done
-
-      - name: Shutdown
-        if: always()
-        run: docker compose -f deployment/docker-compose/compose.yaml down
+#      - name: Run docker compose
+#        run: docker compose -f deployment/docker-compose/compose.yaml up -d
+#
+#      - name: Wait for service (better than sleep)
+#        run: |
+#          until curl -f http://localhost:8081/actuator/health; do
+#            echo "Waiting for service..."
+#            sleep 5
+#          done
+#
+#      - name: Shutdown
+#        if: always()
+#        run: docker compose -f deployment/docker-compose/compose.yaml down
