@@ -21,7 +21,7 @@ services:
     image: catalog-service:latest
     container_name: catalog-service
     build:
-      context: ../..
+      context: .
       dockerfile: deployment/CatalogService.Dockerfile
     depends_on:
       catalog-db:
