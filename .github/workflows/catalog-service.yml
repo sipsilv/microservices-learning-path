@@ -37,11 +37,13 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
+      - name: Make mvnw executable
+        run: chmod +x mvnw
+
       - name: Build with Maven
         run:  ./mvnw -ntp verify
 
-      - name: Make mvnw executable
-        run: chmod +x mvnw
+
 
       - name: Login to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}"| docker login ghcr.io -u ${{ github.actor }} --password-stdin
