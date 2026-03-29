@@ -8,6 +8,8 @@ COPY order-service/pom.xml .
 
 RUN mvn -B -q -e -DskipTests dependency:go-offline
 
+COPY order-service/src/main/resources ./src/main/resources
+
 # Copy source code
 COPY order-service/src ./src
 
