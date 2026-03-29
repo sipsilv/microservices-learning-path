@@ -5,6 +5,7 @@ on:
     paths:
       - order-service/**
       - deployment/**
+      - .github/workflows/**
     branches:
       - "**"
   pull_request:
@@ -44,7 +45,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build \
+          docker build --no-cache \
             -t $IMAGE \
             -f deployment/OrderService.Dockerfile \
             .
