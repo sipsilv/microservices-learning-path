@@ -1,0 +1,67 @@
+name: Order Service
+
+on:
+  push:
+    paths:
+      - order-service/**
+      - deployment/**
+    branches:
+      - "**"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    name: Build, Push and Test
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE: ghcr.io/${{ github.repository_owner }}/order-service:latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build with Maven
+        run: |
+          chmod +x order-service/mvnw
+          cd order-service
+          ./mvnw -ntp verify
+
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t $IMAGE \
+            -f deployment/OrderService.Dockerfile \
+            .
+
+      - name: Push Docker image
+        run: docker push $IMAGE
+
+#      - name: Run docker compose
+#        run: docker compose -f deployment/docker-compose/compose.yaml up -d
+#
+#      - name: Wait for service (better than sleep)
+#        run: |
+#          until curl -f http://localhost:8081/actuator/health; do
+#            echo "Waiting for service..."
+#            sleep 5
+#          done
+#
+#      - name: Shutdown
+#        if: always()
+#        run: docker compose -f deployment/docker-compose/compose.yaml down

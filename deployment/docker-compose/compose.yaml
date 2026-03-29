@@ -11,6 +11,28 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    volumes:
+      - catalog_db_data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+    restart: unless-stopped
+
+  order-db:
+    image: postgres:16-alpine
+    container_name: order-db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${ORDER_DB_NAME}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - order_db_data:/var/lib/postgresql/data
     deploy:
       resources:
         limits:
@@ -18,11 +40,8 @@ services:
     restart: unless-stopped
 
   catalog-service:
-    image: catalog-service:latest
+    image: ghcr.io/sipsilv/catalog-service:latest
     container_name: catalog-service
-    build:
-      context: ../..
-      dockerfile: deployment/CatalogService.Dockerfile
     depends_on:
       catalog-db:
         condition: service_healthy
@@ -33,3 +52,50 @@ services:
     ports:
       - "8081:8081"
     restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"   # AMQP (app connection)
+      - "15672:15672" # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_availability
+      interval: 30s
+      timeout: 30s
+      retries: 10
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+
+
+
+  order-service:
+    image: ghcr.io/sipsilv/order-service:latest
+    container_name: order-service
+    depends_on:
+      order-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      DB_URL: ${ORDER_DB_URL}
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "8082:8082"
+    restart: unless-stopped
+
+
+volumes:
+  rabbitmq_data:
+  order_db_data:
+  catalog_db_data:
