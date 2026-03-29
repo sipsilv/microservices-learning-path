@@ -11,6 +11,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    ports:
+      - "15432:15432"
     volumes:
       - catalog_db_data:/var/lib/postgresql/data
     deploy:
@@ -26,6 +28,8 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${ORDER_DB_NAME}
+    ports:
+      - "25432:5432"
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
