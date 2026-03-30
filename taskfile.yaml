@@ -1,0 +1,19 @@
+version: '3'
+
+tasks:
+  dd:
+    desc: Stop and remove docker containers
+    dir: deployment/docker-compose
+    cmds:
+      - docker compose down
+  du:
+    desc: Start docker compose file
+    dir: deployment/docker-compose
+    cmds:
+      - docker compose up
+  ddu:
+    desc: Stop and start docker containers
+    dir: deployment/docker-compose
+    cmds:
+      - docker compose down -v
+      - docker compose up

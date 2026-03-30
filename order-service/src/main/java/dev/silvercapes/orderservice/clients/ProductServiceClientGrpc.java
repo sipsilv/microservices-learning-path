@@ -4,9 +4,11 @@ import catalogService.ProductRequest;
 import catalogService.ProductResponse;
 import catalogService.ProductServiceGrpc;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 public class ProductServiceClientGrpc {
     @GrpcClient("product-service")
     private ProductServiceGrpc.ProductServiceBlockingStub stub;
