@@ -88,8 +88,6 @@ services:
     depends_on:
       order-db:
         condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
     environment:
       DB_URL: ${ORDER_DB_URL}
       DB_USERNAME: ${POSTGRES_USER}
