@@ -25,9 +25,6 @@ public class Order {
     @Column(nullable = false, unique = true)
     private String orderNumber;
 
-    @Column(name ="username", nullable = false)
-    private String username;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private Set<OrderItem> items;
 
