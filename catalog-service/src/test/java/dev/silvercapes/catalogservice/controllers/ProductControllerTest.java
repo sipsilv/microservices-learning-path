@@ -29,7 +29,7 @@ class ProductControllerTest extends AbstractIntegrationTests {
     void shouldReturnOneProduct(){
         given().contentType(ContentType.JSON)
                 .when()
-                .get("/products/P100")
+                .get("/api/products/P100")
                 .then()
                 .statusCode(200)
                 .body("name", is("The Hunger Games"));
@@ -39,7 +39,7 @@ class ProductControllerTest extends AbstractIntegrationTests {
     void shouldReturn404NotFound(){
         given().contentType(ContentType.JSON)
                 .when()
-                .get("/products/invalid")
+                .get("/api/products/invalid")
                 .then()
                 .statusCode(404);
     }
