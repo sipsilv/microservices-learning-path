@@ -19,4 +19,6 @@ tasks:
     dir: deployment/docker-compose
     cmds:
       - docker compose down -v
+      - docker rmi ghcr.io/sipsilv/catalog-service
+      - docker rmi ghcr.io/sipsilv/order-service
       - docker compose up
