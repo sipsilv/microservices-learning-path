@@ -14,7 +14,7 @@ class ProductControllerTest extends AbstractIntegrationTests {
     void shouldReturnProducts() {
         given().contentType(ContentType.JSON)
                 .when()
-                .get("/products")
+                .get("/api/products")
                 .then()
                 .statusCode(200)
                 .body("data", hasSize(10))
