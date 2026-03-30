@@ -10,7 +10,10 @@ tasks:
     desc: Start docker compose file
     dir: deployment/docker-compose
     cmds:
+      - docker rmi ghcr.io/sipsilv/catalog-service
+      - docker rmi ghcr.io/sipsilv/order-service
       - docker compose up
+
   ddu:
     desc: Stop and start docker containers
     dir: deployment/docker-compose

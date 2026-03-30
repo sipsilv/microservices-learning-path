@@ -21,7 +21,7 @@ public class OrderValidator {
     private static final Logger log = LoggerFactory.getLogger(OrderValidator.class);
     private final ProductServiceClientGrpc productServiceClientGrpc;
 
-    void validate(CreateOrderRequestDTO req){
+    public void validate(CreateOrderRequestDTO req){
         Set<OrderItemDTO> items = req.items();
         for(OrderItemDTO item : items){
             ProductDTO product = productServiceClientGrpc.getProductByCode(item.code())
