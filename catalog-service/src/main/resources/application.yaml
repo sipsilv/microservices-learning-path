@@ -11,6 +11,10 @@ server:
   port: 8081
   shutdown : graceful
 
+grpc:
+  server:
+    port: 9090
+
 
 management:
   endpoints:
