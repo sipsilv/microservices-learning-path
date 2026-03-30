@@ -51,6 +51,7 @@ public class Order {
                     @AttributeOverride(name = "country", column = @Column(name = "delivery_address_country")),
             }) private Address address;
 
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
