@@ -38,7 +38,7 @@ jobs:
         run: |
           chmod +x order-service/mvnw
           cd order-service
-          ./mvnw -ntp verify -Dskiptests
+          ./mvnw -ntp verify -Dmaven.test.skip=true
 
       - name: Login to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
