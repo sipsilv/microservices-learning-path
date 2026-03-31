@@ -19,28 +19,28 @@ class OrderControllerTests extends AbstractIntegrationTests {
         void shouldCreateOrderSuccessfully(){
             String payload = """
                     {
-                      "items": [
-                        {
-                          "code": "P1001",
-                          "name": "Wireless Mouse",
-                          "price": 499.0,
-                          "quantity": 2
+                        "items": [
+                          {
+                            "code": "P100",
+                            "name": "Wireless Mouse",
+                            "price": 34,
+                            "quantity": 2
+                          }
+                        ],
+                        "customer": {
+                          "name": "Santhosh Jallu",
+                          "phone": "9876543210",
+                          "email": "santhosh@example.com"
+                        },
+                        "address": {
+                          "addressLine1": "123 Main Street",
+                          "addressLine2": "Near Park",
+                          "city": "Hyderabad",
+                          "state": "Telangana",
+                          "zipCode": "500001",
+                          "country": "India"
                         }
-                      ],
-                      "customer": {
-                        "name": "Santhosh Jallu",
-                        "phone": "9876543210",
-                        "email": "santhosh@example.com"
-                      },
-                      "address": {
-                        "addressLine1": "123 Main Street",
-                        "addressLine2": "Near Park",
-                        "city": "Hyderabad",
-                        "state": "Telangana",
-                        "zipCode": "500001",
-                        "country": "India"
                       }
-                    }
                     """;
 
             given()
