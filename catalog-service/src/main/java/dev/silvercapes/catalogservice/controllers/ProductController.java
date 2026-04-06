@@ -4,8 +4,10 @@ import dev.silvercapes.catalogservice.dto.ProductResponseDTO;
 import dev.silvercapes.catalogservice.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.resilience.annotation.Retryable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +23,7 @@ class ProductController {
     }
 
     @GetMapping("/{code}")
+    @Retryable()
     ProductResponseDTO getProductByCode(@PathVariable String code){
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProductByCode(code)).getBody();
     }
