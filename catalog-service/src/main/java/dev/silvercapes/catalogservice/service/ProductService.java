@@ -32,7 +32,7 @@ public class ProductService {
         pageNum = pageNum <=1 ? 0 : pageNum -1;
         Pageable pageable = (Pageable) PageRequest.of(pageNum, applicationProperties.pageSize(), sort);
         Page<ProductResponseDTO> productsPage = productRepository.findAll(pageable).map(product -> modelMapper.map(product, ProductResponseDTO.class));
-
+        sleep();
         return PagedResult.<ProductResponseDTO>builder()
                 .totalElements(productsPage.getTotalElements())
                 .isFirst(productsPage.isFirst())
@@ -45,9 +45,18 @@ public class ProductService {
                 .build();
     }
 
+    void sleep(){
+        try{
+            Thread.sleep(6000);
+        } catch (Exception e){
+            System.out.print(e.getMessage());
+        }
+    }
+
     public ProductResponseDTO getProductByCode(String code){
         Product product = productRepository.findProductByCode(code)
                 .orElseThrow(() -> new ProductNotFoundException("Product with the given code doesn't exist"));
+        sleep();
         return modelMapper.map(product, ProductResponseDTO.class);
     }
 }
