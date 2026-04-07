@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.rabbitmq.RabbitMQContainer;
 import org.testcontainers.utility.DockerImageName;
+import org.wiremock.integrations.testcontainers.WireMockContainer;
 
 @TestConfiguration(proxyBeanMethods = false)
 class TestcontainersConfiguration {
@@ -20,6 +21,11 @@ class TestcontainersConfiguration {
     @ServiceConnection
     RabbitMQContainer rabbitContainer() {
         return new RabbitMQContainer(DockerImageName.parse("rabbitmq:3.12.11-alpine"));
+    }
+
+    @Bean
+    WireMockContainer wireMockContainer() {
+        return new WireMockContainer("wiremock/wiremock:3.5.2-alpine");
     }
 
 }
