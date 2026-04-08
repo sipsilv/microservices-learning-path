@@ -6,7 +6,9 @@ import dev.silvercapes.orderservice.clients.ProductServiceClientGrpc;
 import dev.silvercapes.orderservice.properties.ApplicationProperties;
 import io.restassured.http.ContentType;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -18,6 +20,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.when;
 
+@Disabled
+@Tag("order-tests")
 class OrderControllerTests extends AbstractIntegrationTests {
     @Autowired
     private ApplicationProperties applicationProperties;

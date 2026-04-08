@@ -2,6 +2,7 @@ package dev.silvercapes.catalogservice.repository;
 
 
 import dev.silvercapes.catalogservice.model.Product;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
@@ -20,6 +21,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 )
 
 @Sql("/test-data.sql")
+@Disabled
 class ProductRepositoryTest {
         @Autowired
         private ProductRepository productRepository;

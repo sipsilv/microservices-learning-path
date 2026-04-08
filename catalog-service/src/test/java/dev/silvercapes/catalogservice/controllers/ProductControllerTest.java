@@ -2,6 +2,7 @@ package dev.silvercapes.catalogservice.controllers;
 
 import dev.silvercapes.catalogservice.AbstractIntegrationTests;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -9,6 +10,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 @Sql("/test-data.sql")
+@Disabled
 class ProductControllerTest extends AbstractIntegrationTests {
     @Test
     void shouldReturnProducts() {

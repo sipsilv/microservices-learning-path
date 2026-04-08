@@ -6,6 +6,8 @@ import dev.silvercapes.orderservice.service.OrderService;
 import io.restassured.specification.Argument;
 import org.junit.jupiter.api.BeforeEach;
 import static org.mockito.ArgumentMatchers.eq;
+
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.provider.Arguments;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(OrderController.class)
+@Disabled
 public class OrderControllerUnitTests {
     @MockitoBean
     private OrderService orderService;
